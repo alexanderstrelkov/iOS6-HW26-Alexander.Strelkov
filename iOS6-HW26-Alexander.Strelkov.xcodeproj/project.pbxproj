@@ -56,15 +56,47 @@
 		11E021F828AA267D004846F7 /* iOS6-HW26-Alexander.Strelkov */ = {
 			isa = PBXGroup;
 			children = (
-				11E021F928AA267D004846F7 /* AppDelegate.swift */,
-				11E021FB28AA267D004846F7 /* SceneDelegate.swift */,
-				11E021FD28AA267D004846F7 /* ViewController.swift */,
-				11E021FF28AA267D004846F7 /* Main.storyboard */,
+				11E0220E28AA2A06004846F7 /* Sources */,
+				11E0220D28AA29FA004846F7 /* Resources */,
+			);
+			path = "iOS6-HW26-Alexander.Strelkov";
+			sourceTree = "<group>";
+		};
+		11E0220D28AA29FA004846F7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				11E0220228AA2680004846F7 /* Assets.xcassets */,
+				11E021FF28AA267D004846F7 /* Main.storyboard */,
 				11E0220428AA2680004846F7 /* LaunchScreen.storyboard */,
 				11E0220728AA2680004846F7 /* Info.plist */,
 			);
-			path = "iOS6-HW26-Alexander.Strelkov";
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		11E0220E28AA2A06004846F7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				11E0221028AA2A16004846F7 /* Scenes */,
+				11E0220F28AA2A10004846F7 /* App */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		11E0220F28AA2A10004846F7 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				11E021F928AA267D004846F7 /* AppDelegate.swift */,
+				11E021FB28AA267D004846F7 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		11E0221028AA2A16004846F7 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				11E021FD28AA267D004846F7 /* ViewController.swift */,
+			);
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,7 +323,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QWP4K38XSA;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "iOS6-HW26-Alexander.Strelkov/Info.plist";
+				INFOPLIST_FILE = "iOS6-HW26-Alexander.Strelkov/Resources/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -319,7 +351,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QWP4K38XSA;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "iOS6-HW26-Alexander.Strelkov/Info.plist";
+				INFOPLIST_FILE = "iOS6-HW26-Alexander.Strelkov/Resources/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
