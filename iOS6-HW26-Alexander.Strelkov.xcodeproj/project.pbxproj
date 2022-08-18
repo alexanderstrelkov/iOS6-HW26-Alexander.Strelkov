@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		11684CAD28AE4D6400A7503E /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11684CAC28AE4D6400A7503E /* UsersViewController.swift */; };
-		11684CB028AE5A5C00A7503E /* VCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11684CAF28AE5A5C00A7503E /* VCExtension.swift */; };
 		11684CB328AE5B3400A7503E /* UsersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11684CB228AE5B3400A7503E /* UsersModel.swift */; };
+		11684CB928AE63B200A7503E /* UsersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11684CB828AE63B200A7503E /* UsersPresenter.swift */; };
 		11E021FA28AA267D004846F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E021F928AA267D004846F7 /* AppDelegate.swift */; };
 		11E021FC28AA267D004846F7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E021FB28AA267D004846F7 /* SceneDelegate.swift */; };
 		11E0220128AA267D004846F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11E021FF28AA267D004846F7 /* Main.storyboard */; };
@@ -19,8 +19,8 @@
 
 /* Begin PBXFileReference section */
 		11684CAC28AE4D6400A7503E /* UsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
-		11684CAF28AE5A5C00A7503E /* VCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCExtension.swift; sourceTree = "<group>"; };
 		11684CB228AE5B3400A7503E /* UsersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersModel.swift; sourceTree = "<group>"; };
+		11684CB828AE63B200A7503E /* UsersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsersPresenter.swift; path = "iOS6-HW26-Alexander.Strelkov/Sources/Scenes/View/UsersPresenter.swift"; sourceTree = SOURCE_ROOT; };
 		11E021F628AA267D004846F7 /* iOS6-HW26-Alexander.Strelkov.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS6-HW26-Alexander.Strelkov.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		11E021F928AA267D004846F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11E021FB28AA267D004846F7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,16 +60,9 @@
 		11684CAB28AE4D4900A7503E /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				11684CB828AE63B200A7503E /* UsersPresenter.swift */,
 			);
 			path = Presenter;
-			sourceTree = "<group>";
-		};
-		11684CB128AE5AFE00A7503E /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				11684CAF28AE5A5C00A7503E /* VCExtension.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		11E021ED28AA267D004846F7 = {
@@ -129,7 +122,6 @@
 		11E0221028AA2A16004846F7 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				11684CB128AE5AFE00A7503E /* Extensions */,
 				11684CA928AE4D3C00A7503E /* Model */,
 				11684CAA28AE4D4400A7503E /* View */,
 				11684CAB28AE4D4900A7503E /* Presenter */,
@@ -212,7 +204,7 @@
 				11E021FA28AA267D004846F7 /* AppDelegate.swift in Sources */,
 				11E021FC28AA267D004846F7 /* SceneDelegate.swift in Sources */,
 				11684CB328AE5B3400A7503E /* UsersModel.swift in Sources */,
-				11684CB028AE5A5C00A7503E /* VCExtension.swift in Sources */,
+				11684CB928AE63B200A7503E /* UsersPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
