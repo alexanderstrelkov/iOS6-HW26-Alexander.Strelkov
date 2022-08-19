@@ -25,7 +25,7 @@
                                 </connections>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="nJu-wN-6io">
-                                <rect key="frame" x="0.0" y="377" width="414" height="489"/>
+                                <rect key="frame" x="0.0" y="377" width="414" height="519"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="usersCell" id="ILh-dK-0EM">
                                         <rect key="frame" x="20" y="49.5" width="374" height="43.5"/>
@@ -60,7 +60,7 @@
                             <constraint firstItem="nJu-wN-6io" firstAttribute="top" secondItem="yED-Ul-fMz" secondAttribute="bottom" constant="50" id="G5Z-fi-3o7"/>
                             <constraint firstItem="yED-Ul-fMz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="L0Y-8o-ypn"/>
                             <constraint firstItem="nJu-wN-6io" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="OhD-Ka-BZm"/>
-                            <constraint firstAttribute="bottom" secondItem="nJu-wN-6io" secondAttribute="bottom" constant="30" id="gV1-PW-i6D"/>
+                            <constraint firstAttribute="bottom" secondItem="nJu-wN-6io" secondAttribute="bottom" id="gV1-PW-i6D"/>
                             <constraint firstItem="nJu-wN-6io" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="jR1-IN-5LB"/>
                             <constraint firstItem="yED-Ul-fMz" firstAttribute="top" secondItem="BsC-iv-VK7" secondAttribute="bottom" constant="15" id="lXY-GU-yh0"/>
                             <constraint firstItem="BsC-iv-VK7" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="nP2-O5-vGf"/>
@@ -69,6 +69,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Users" id="OSK-0Z-mUf"/>
                     <connections>
+                        <outlet property="pressButton" destination="yED-Ul-fMz" id="Bsj-QY-WvT"/>
                         <outlet property="tableView" destination="nJu-wN-6io" id="A25-xG-4UV"/>
                         <outlet property="textField" destination="BsC-iv-VK7" id="7Gd-w3-qfN"/>
                     </connections>
