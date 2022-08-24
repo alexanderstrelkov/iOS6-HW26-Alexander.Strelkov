@@ -11,6 +11,8 @@ import CoreData
 
 class UsersViewController: UIViewController {
     
+    //MARK: -FetchResultController:
+    
     var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
@@ -27,22 +29,14 @@ class UsersViewController: UIViewController {
     
     @IBOutlet weak var pressButton: UIButton!
     
-    @IBAction func textTypedField(_ sender: UITextField) {
-        
-    }
-    
     //MARK: -IBActions:
     
     @IBAction func buttonPressed(_ sender: UIButton) {
         let alert = UIAlertController(title: "\(self.textField.text ?? "") will be added", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Confirm", style: .default) { (action) in
-            
-            let newUser = User(context: UserDataManager.instance.context)
-
-            newUser.title = self.textField.text ?? ""
-            
-            self.saveUsers()
+            guard let newUser = self.textField.text else { return }
+            UserDataManager.instance.createNewUser(named: newUser)
             self.textField.text = ""
         }
         alert.addAction(action)
@@ -54,30 +48,25 @@ class UsersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadUsers()
-        fetchResultController.delegate = self
-    }
-   
-    //MARK: -Methods
-    
-    func saveUsers() {
-        do {
-            try UserDataManager.instance.context.save()
-        } catch {
-            print("Error saving context \(error)")
-        }
-        self.tableView.reloadData()
+        fetchedResultControllerDelegate()
     }
     
-    func loadUsers() {
+    //MARK: -Functions:
+    
+    internal func loadUsers() {
         do {
             try fetchResultController.performFetch()
         } catch {
             print("Error fetching data from context \(error)")
         }
     }
+    
+    private func fetchedResultControllerDelegate() {
+        fetchResultController.delegate = self
+    }
 }
 
-//MARK: -TableViewDelegate:
+//MARK: -TableViewDelegates:
 
 extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -109,10 +98,16 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let user = fetchResultController.object(at: indexPath) as! User
-            UserDataManager.instance.context.delete(user)
-            UserDataManager.instance.saveContext()
+            fetchResultController.managedObjectContext.delete(user)
+            do {
+                try fetchResultController.managedObjectContext.save()
+            } catch {
+                print(error)
+            }
         }
     }
+    
+    //MARK: -Segue to move to DetailsView:
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToUserDetails" {
@@ -120,8 +115,9 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
             destination?.user = sender as? User
         }
     }
-    
 }
+
+//MARK: -FetchedResultsControllerDelegates:
 
 extension UsersViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -135,7 +131,6 @@ extension UsersViewController: NSFetchedResultsControllerDelegate {
                 let user = fetchResultController.object(at: indexPath) as! User
                 guard let cell = tableView.cellForRow(at: indexPath) else { break }
                 cell.textLabel?.text = user.title
-                tableView.reloadData()
             }
         case .insert:
             if let indexPath = newIndexPath {
@@ -161,5 +156,3 @@ extension UsersViewController: NSFetchedResultsControllerDelegate {
         tableView.endUpdates()
     }
 }
-
-

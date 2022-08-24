@@ -9,10 +9,18 @@ import Foundation
 import CoreData
 import UIKit
 
-class UserDataManager {
-    static let instance = UserDataManager()
+protocol UserDataProtocol: AnyObject {
+    var user: User? { get set }
+    func entityForName(entityName: String) -> NSEntityDescription
+    func updateUser(_ user: User, newName: String?, date: String?, gender: String?)
+    func createNewUser(named title: String)
+}
+
+class UserDataManager: UserDataProtocol {
     
-    private init() {}
+    var user: User?
+    
+    static let instance = UserDataManager()
     
     lazy var context: NSManagedObjectContext = {
         persistentContainer.viewContext
@@ -23,6 +31,7 @@ class UserDataManager {
     func entityForName(entityName: String) -> NSEntityDescription {
         return NSEntityDescription.entity(forEntityName: entityName, in: context) ?? NSEntityDescription()
     }
+    
     // MARK: - Core Data stack
     
     lazy var persistentContainer: NSPersistentContainer = {
@@ -35,38 +44,46 @@ class UserDataManager {
         return container
     }()
     
-    // MARK: - Core Data Saving support
+    //MARK: -Functions:
     
+    func updateUser(_ user: User, newName: String?, date: String?, gender: String?) {
+        if let newName = newName {
+            user.title = newName
+        }
+        if let date = date {
+            user.date = date.convertToDate()
+        }
+        if let gender = gender {
+            user.gender = gender
+        }
+        do {
+            try context.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func createNewUser(named title: String) {
+        let newUser = User(context: UserDataManager.instance.context)
+        newUser.title = title
+        do {
+            try context.save()
+        } catch {
+            print(error)
+        }
+    }
+}
+
+extension UserDataManager {
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
             } catch {
-                
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
-        }
-    }
-    
-    func updateUser(_ user: User, newName: String?, date: String?, gender: String?) {
-        if let newName = newName {
-            user.title = newName
-        }
-
-        if let date = date {
-            user.date = date.convertToDate()
-        }
-
-        if let gender = gender {
-            user.gender = gender
-        }
-
-        do {
-            try context.save()
-        } catch {
-            print(error)
         }
     }
 }

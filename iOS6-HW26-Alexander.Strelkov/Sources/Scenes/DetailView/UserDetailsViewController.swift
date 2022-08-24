@@ -10,7 +10,12 @@ import CoreData
 
 class UserDetailsViewController: UIViewController {
     
+    //MARK: -Attributes:
+    
     var isEdit = false
+    var user = UserDataManager.instance.user
+    
+    //MARK: -IBOutles:
     
     @IBOutlet weak var nameTextField: UITextField!
     
@@ -20,17 +25,10 @@ class UserDetailsViewController: UIViewController {
     
     @IBOutlet weak var editButton: UIBarButtonItem!
     
+    //MARK: -IBActions:
+    
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
-        func toggleMode() {
-            isEdit.toggle()
-            editButton.title = isEdit ? "Save" : "Edit"
-            nameTextField.isEnabled.toggle()
-            dateTextField.isEnabled.toggle()
-            genderTextField.isEnabled.toggle()
-        }
-        
         toggleMode()
-        
         if !isEdit {
             if saveUser() {
                 let alert = UIAlertController(title: "Success", message: "", preferredStyle: .alert)
@@ -41,22 +39,36 @@ class UserDetailsViewController: UIViewController {
         }
     }
     
-    var user: User?
+    //MARK: -viewDidLoad:
     
     override func viewDidLoad() {
         super.viewDidLoad()
         disableFields()
-        if let user = user {
-            nameTextField.text = user.title
-            dateTextField.text = user.date?.convertToString()
-            genderTextField.text = user.gender
-        }
+        setupFields()
     }
+    
+    //MARK: -Functions:
     
     func disableFields() {
         nameTextField.isEnabled = false
         genderTextField.isEnabled = false
         dateTextField.isEnabled = false
+    }
+    
+    func toggleMode() {
+        isEdit.toggle()
+        editButton.title = isEdit ? "Save" : "Edit"
+        nameTextField.isEnabled.toggle()
+        dateTextField.isEnabled.toggle()
+        genderTextField.isEnabled.toggle()
+    }
+    
+    func setupFields() {
+        if let user = user {
+            nameTextField.text = user.title
+            dateTextField.text = user.date?.convertToString()
+            genderTextField.text = user.gender
+        }
     }
     
     func saveUser() -> Bool {
@@ -67,14 +79,11 @@ class UserDetailsViewController: UIViewController {
             present(alert, animated: true, completion: nil)
             return false
         }
-        if user == nil {
-            user = User()
-        }
         if let user = user {
             user.title = nameTextField.text
             user.date = dateTextField.text?.convertToDate()
             user.gender = genderTextField.text
-             UserDataManager.instance.updateUser(user, newName: nameTextField.text, date: dateTextField.text, gender: genderTextField.text)
+            UserDataManager.instance.updateUser(user, newName: nameTextField.text, date: dateTextField.text, gender: genderTextField.text)
         }
         return true
     }
