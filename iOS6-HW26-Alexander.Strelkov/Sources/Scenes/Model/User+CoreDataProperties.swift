@@ -17,7 +17,6 @@ extension User {
     }
 
     @NSManaged public var title: String?
-    @NSManaged public var avatar: Data?
     @NSManaged public var date: Date?
     @NSManaged public var gender: String?
 
