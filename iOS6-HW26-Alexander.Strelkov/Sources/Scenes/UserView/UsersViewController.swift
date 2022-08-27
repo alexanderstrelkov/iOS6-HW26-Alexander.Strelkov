@@ -11,6 +11,8 @@ import CoreData
 
 class UsersViewController: UIViewController {
     
+    private var presenter: UsersPresenterProcotol?
+    
     //MARK: -FetchResultController:
     
     var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
@@ -24,9 +26,7 @@ class UsersViewController: UIViewController {
     //MARK: -IBOutlets:
     
     @IBOutlet weak var textField: UITextField!
-    
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var pressButton: UIButton!
     
     //MARK: -IBActions:
@@ -36,7 +36,7 @@ class UsersViewController: UIViewController {
         
         let action = UIAlertAction(title: "Confirm", style: .default) { (action) in
             guard let newUser = self.textField.text else { return }
-            UserDataManager.instance.createNewUser(named: newUser)
+            self.presenter?.createNewUser(named: newUser)
             self.textField.text = ""
         }
         alert.addAction(action)
@@ -47,13 +47,18 @@ class UsersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenterInit()
         loadUsers()
         fetchedResultControllerDelegate()
     }
     
     //MARK: -Functions:
     
-    internal func loadUsers() {
+    func presenterInit() {
+        presenter = UsersPresenter(coreDataService: UserDataManager.instance)
+    }
+    
+    func loadUsers() {
         do {
             try fetchResultController.performFetch()
         } catch {
@@ -112,7 +117,7 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToUserDetails" {
             let destination = segue.destination as? UserDetailsViewController
-            destination?.user = sender as? User
+            destination?.user = sender as! User
         }
     }
 }
