@@ -13,16 +13,14 @@ class UserDetailsViewController: UIViewController {
     //MARK: -Attributes:
     
     var isEdit = false
-    var user = UserDataManager.instance.user
+    var presenter: DetailUserPresenterProtocol?
+    var user: AnyObject?
     
     //MARK: -IBOutles:
     
     @IBOutlet weak var nameTextField: UITextField!
-    
     @IBOutlet weak var dateTextField: UITextField!
-    
     @IBOutlet weak var genderTextField: UITextField!
-    
     @IBOutlet weak var editButton: UIBarButtonItem!
     
     //MARK: -IBActions:
@@ -44,10 +42,18 @@ class UserDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         disableFields()
-        setupFields()
+        setupTextFields()
     }
     
     //MARK: -Functions:
+    
+    func setupTextFields() {
+        if let user = user as? User { // вью не должна знать о модели=( но так хотя бы работает
+            nameTextField.text = user.title
+            dateTextField.text = user.date?.convertToString()
+            genderTextField.text = user.gender
+        }
+    }
     
     func disableFields() {
         nameTextField.isEnabled = false
@@ -62,15 +68,7 @@ class UserDetailsViewController: UIViewController {
         dateTextField.isEnabled.toggle()
         genderTextField.isEnabled.toggle()
     }
-    
-    func setupFields() {
-        if let user = user {
-            nameTextField.text = user.title
-            dateTextField.text = user.date?.convertToString()
-            genderTextField.text = user.gender
-        }
-    }
-    
+
     func saveUser() -> Bool {
         if nameTextField.text == "" {
             let alert = UIAlertController(title: "Can't save!", message: "No name typed, please fill in the information", preferredStyle: .alert)
@@ -79,13 +77,18 @@ class UserDetailsViewController: UIViewController {
             present(alert, animated: true, completion: nil)
             return false
         }
-        if let user = user {
-            user.title = nameTextField.text
-            user.date = dateTextField.text?.convertToDate()
-            user.gender = genderTextField.text
-            UserDataManager.instance.updateUser(user, newName: nameTextField.text, date: dateTextField.text, gender: genderTextField.text)
-        }
+//        if user == nil {
+//            user = User()
+//        }
+//        if let user = presenter?.userToEdit {
+//            user.title = nameTextField.text
+//            user.date = dateTextField.text?.convertToDate()
+//            user.gender = genderTextField.text
+////            presenter?.updateUser(presenter?.userToEdit!, newName: <#T##String?#>, date: <#T##String?#>, gender: <#T##String?#>)
+////        }
         return true
+//    }
     }
 }
+
 
