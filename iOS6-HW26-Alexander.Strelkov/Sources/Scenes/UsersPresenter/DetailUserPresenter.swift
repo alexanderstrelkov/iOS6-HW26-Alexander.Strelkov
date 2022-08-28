@@ -13,33 +13,22 @@ protocol DetailUserViewProtocol: AnyObject {
 
 protocol DetailUserPresenterProtocol: AnyObject {
     var userToEdit: User? { get set }
-
-    init(view: DetailUserViewProtocol, coreDataService: UserDataProtocol, user: User?)
-    func getUser()
+    
+    init(view: DetailUserViewProtocol, user: User?)
     func updateUser(_ user: User, newName: String?, date: String?, gender: String?)
 }
 
 class DetailUserPresenter: DetailUserPresenterProtocol {
-    
     weak var view: DetailUserViewProtocol?
-    let dataManager: UserDataProtocol?
+    public let dataManager = UserDataManager()
     var userToEdit: User?
     
-    required init(view: DetailUserViewProtocol, coreDataService: UserDataProtocol, user: User?) {
-        self.dataManager = coreDataService
+    required init(view: DetailUserViewProtocol, user: User?) {
         self.userToEdit = user
         self.view = view
     }
     
-    func getUser() {
-        view?.setupTextFields()
-    }
-    
-//    var userToEdit = User()
-    
     func updateUser(_ user: User, newName: String?, date: String?, gender: String?) {
-        dataManager?.updateUser(user, newName: newName, date: date, gender: gender)
+        dataManager.updateUser(user, newName: newName, date: date, gender: gender)
     }
-    
-    
 }
