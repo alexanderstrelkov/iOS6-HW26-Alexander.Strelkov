@@ -12,17 +12,7 @@ import CoreData
 class UsersViewController: UIViewController {
     
     private var presenter: UsersPresenterProcotol?
-    
-    //MARK: -FetchResultController:
-    
-    var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        let fetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: UserDataManager.instance.context, sectionNameKeyPath: nil, cacheName: nil)
-        return fetchedResultController
-    }()
-    
+        
     //MARK: -IBOutlets:
     
     @IBOutlet weak var textField: UITextField!
@@ -60,14 +50,14 @@ class UsersViewController: UIViewController {
     
     func loadUsers() {
         do {
-            try fetchResultController.performFetch()
+            try presenter?.fetchResultController.performFetch()
         } catch {
             print("Error fetching data from context \(error)")
         }
     }
     
     private func fetchedResultControllerDelegate() {
-        fetchResultController.delegate = self
+        presenter?.fetchResultController.delegate = self
     }
 }
 
@@ -76,7 +66,7 @@ class UsersViewController: UIViewController {
 extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sections = fetchResultController.sections {
+        if let sections = presenter?.fetchResultController.sections {
             return sections[section].numberOfObjects
         } else {
             return 0
@@ -85,14 +75,14 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "usersCell", for: indexPath)
-        let user = fetchResultController.object(at: indexPath) as! User
+        let user = presenter?.fetchResultController.object(at: indexPath) as! User
         cell.textLabel?.text = user.title
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let user = fetchResultController.object(at: indexPath) as! User
+        let user = presenter?.fetchResultController.object(at: indexPath) as! User
         performSegue(withIdentifier: "goToUserDetails", sender: user)
     }
     
@@ -102,10 +92,10 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let user = fetchResultController.object(at: indexPath) as! User
-            fetchResultController.managedObjectContext.delete(user)
+            let user = presenter?.fetchResultController.object(at: indexPath) as! User
+            presenter?.fetchResultController.managedObjectContext.delete(user)
             do {
-                try fetchResultController.managedObjectContext.save()
+                try presenter?.fetchResultController.managedObjectContext.save()
             } catch {
                 print(error)
             }
@@ -133,7 +123,7 @@ extension UsersViewController: NSFetchedResultsControllerDelegate {
         switch type {
         case .update:
             if let indexPath = indexPath {
-                let user = fetchResultController.object(at: indexPath) as! User
+                let user = presenter?.fetchResultController.object(at: indexPath) as! User
                 guard let cell = tableView.cellForRow(at: indexPath) else { break }
                 cell.textLabel?.text = user.title
             }
