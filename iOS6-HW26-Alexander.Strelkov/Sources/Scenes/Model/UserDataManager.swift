@@ -10,38 +10,17 @@ import CoreData
 import UIKit
 
 protocol UserDataProtocol: AnyObject {
-//    var allUsers: [User]? { get }
-//    func getAllUsers() -> [User]?
     func entityForName(entityName: String) -> NSEntityDescription
     func updateUser(_ user: User, newName: String?, date: String?, gender: String?)
     func createNewUser(named title: String)
 }
 
 class UserDataManager: UserDataProtocol {
-    
     static let instance = UserDataManager()
-    
-//    var allUsers: [User]? {
-//        return getAllUsers()
-//    }
-    
-//    func getAllUsers() -> [User]? {
-//        do {
-//            let request = User.fetchRequest() as NSFetchRequest<User>
-//            let sort = NSSortDescriptor(key: "name", ascending: true)
-//            request.sortDescriptors = [sort]
-//            let users = try context.fetch(request)
-//            return users
-//        } catch {
-//            print(error)
-//            return nil
-//        }
-//    }
     
     lazy var context: NSManagedObjectContext = {
         persistentContainer.viewContext
     }()
-//    lazy var context = persistentContainer.viewContext
     
     //MARK: -EntityDescription
     
@@ -83,7 +62,7 @@ class UserDataManager: UserDataProtocol {
     func createNewUser(named title: String) {
         let newUser = User(context: context)
         newUser.title = title
-
+        
         do {
             try context.save()
         } catch {

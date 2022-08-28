@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension String {
     public func convertToDate() -> Date? {
@@ -22,3 +23,5 @@ extension Date {
         return formatter.string(from: self)
     }
 }
+
+

@@ -10,7 +10,6 @@ import Foundation
 import CoreData
 
 public class User: NSManagedObject {
-    
     @NSManaged public var title: String?
     @NSManaged public var date: Date?
     @NSManaged public var gender: String?
