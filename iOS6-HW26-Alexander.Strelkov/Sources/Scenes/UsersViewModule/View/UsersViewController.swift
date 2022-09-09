@@ -11,7 +11,7 @@ import CoreData
 
 class UsersViewController: UIViewController {
     
-    private var presenter: UsersPresenterProcotol?
+    private var presenter = UsersPresenter()
         
     //MARK: -IBOutlets:
     
@@ -26,7 +26,7 @@ class UsersViewController: UIViewController {
         
         let action = UIAlertAction(title: "Confirm", style: .default) { (action) in
             guard let newUser = self.textField.text else { return }
-            self.presenter?.createNewUser(named: newUser)
+            self.presenter.createNewUser(named: newUser)
             self.textField.text = ""
         }
         alert.addAction(action)
@@ -37,27 +37,8 @@ class UsersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenterInit()
-        loadUsers()
+        presenter.loadUsers()
         fetchedResultControllerDelegate()
-    }
-    
-    //MARK: -Functions:
-    
-    func presenterInit() {
-        presenter = UsersPresenter(coreDataService: UserDataManager.instance)
-    }
-    
-    func loadUsers() {
-        do {
-            try presenter?.fetchResultController.performFetch()
-        } catch {
-            print("Error fetching data from context \(error)")
-        }
-    }
-    
-    private func fetchedResultControllerDelegate() {
-        presenter?.fetchResultController.delegate = self
     }
 }
 
@@ -66,7 +47,7 @@ class UsersViewController: UIViewController {
 extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sections = presenter?.fetchResultController.sections {
+        if let sections = presenter.fetchResultController.sections {
             return sections[section].numberOfObjects
         } else {
             return 0
@@ -75,14 +56,14 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "usersCell", for: indexPath)
-        let user = presenter?.fetchResultController.object(at: indexPath) as! User
+        let user = presenter.fetchResultController.object(at: indexPath) as! User
         cell.textLabel?.text = user.title
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let user = presenter?.fetchResultController.object(at: indexPath) as! User
+        let user = presenter.fetchResultController.object(at: indexPath) as! User
         performSegue(withIdentifier: "goToUserDetails", sender: user)
     }
     
@@ -92,13 +73,9 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let user = presenter?.fetchResultController.object(at: indexPath) as! User
-            presenter?.fetchResultController.managedObjectContext.delete(user)
-            do {
-                try presenter?.fetchResultController.managedObjectContext.save()
-            } catch {
-                print(error)
-            }
+            let user = presenter.fetchResultController.object(at: indexPath) as! User
+
+            presenter.deleteUser(user: user)
         }
     }
     
@@ -123,7 +100,7 @@ extension UsersViewController: NSFetchedResultsControllerDelegate {
         switch type {
         case .update:
             if let indexPath = indexPath {
-                let user = presenter?.fetchResultController.object(at: indexPath) as! User
+                let user = presenter.fetchResultController.object(at: indexPath) as! User
                 guard let cell = tableView.cellForRow(at: indexPath) else { break }
                 cell.textLabel?.text = user.title
             }
@@ -149,5 +126,11 @@ extension UsersViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+    }
+}
+
+extension UsersViewController {
+    private func fetchedResultControllerDelegate() {
+        presenter.fetchResultController.delegate = self
     }
 }

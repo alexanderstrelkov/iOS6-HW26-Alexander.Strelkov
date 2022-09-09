@@ -70,7 +70,6 @@ class UserDetailsViewController: UIViewController {
         genderPicker.delegate = self
         genderPicker.dataSource = self
         genderTextField.inputView = genderPicker
-        
     }
     
     func disableFields() {
@@ -127,7 +126,7 @@ extension UserDetailsViewController: UIPickerViewDelegate, UIPickerViewDataSourc
     }
 }
 
-extension UserDetailsViewController: DetailUserViewProtocol {
+extension UserDetailsViewController: DetailUserViewProtocol {    
     func setupTextFields() {
         if let user = user as? User {
             nameTextField.text = user.title
