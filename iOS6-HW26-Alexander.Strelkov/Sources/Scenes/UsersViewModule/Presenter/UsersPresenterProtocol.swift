@@ -10,12 +10,15 @@ import UIKit
 import CoreData
 
 protocol UsersPresenterProcotol: AnyObject {
-    init(coreDataService: UserDataProtocol)
     func createNewUser(named title: String)
     var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> { get }
+    func loadUsers()
+    func deleteUser(user: NSManagedObject)
+    func saveUser()
 }
 
 class UsersPresenter: UsersPresenterProcotol {
+    
     var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
@@ -24,14 +27,30 @@ class UsersPresenter: UsersPresenterProcotol {
         return fetchedResultController
     }()
     
-    let dataManager: UserDataProtocol?
-    
-    required init(coreDataService: UserDataProtocol) {
-        self.dataManager = coreDataService
-    }
+    public let dataManager = UserDataManager()
     
     func createNewUser(named title: String) {
-        dataManager?.createNewUser(named: title)
+        dataManager.createNewUser(named: title)
+    }
+    
+    func loadUsers() {
+        do {
+            try fetchResultController.performFetch()
+        } catch {
+            print("Error fetching data from context \(error)")
+        }
+    }
+    
+    func deleteUser(user: NSManagedObject) {
+        fetchResultController.managedObjectContext.delete(user)
+        do {
+            try fetchResultController.managedObjectContext.save()
+        } catch {
+            print(error)
+        }
+    }
+    func saveUser() {
+        
     }
 }
 

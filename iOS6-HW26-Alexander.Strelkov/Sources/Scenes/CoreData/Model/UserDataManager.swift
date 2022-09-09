@@ -60,7 +60,7 @@ class UserDataManager: UserDataProtocol {
     }
     
     func createNewUser(named title: String) {
-        let newUser = User(context: context)
+        let newUser = User(context: UserDataManager.instance.context)
         newUser.title = title
         
         do {
